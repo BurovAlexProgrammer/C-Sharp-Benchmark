@@ -51,5 +51,4 @@ public class TestClass {
 
 </details>
 
-![image](https://user-images.githubusercontent.com/7298288/220062867-84af68e5-4218-44e2-a682-05b6e9994db7.png)
-
+![image](https://user-images.githubusercontent.com/7298288/220064034-a5b7218b-5cf1-4663-a07b-e14f1f805331.png)
