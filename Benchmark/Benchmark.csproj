@@ -166,7 +166,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dictionary_vs_List.cs" />
+    <Compile Include="Collections_Benchmark.cs" />
     <Compile Include="Field_vs_Property.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

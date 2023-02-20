@@ -1,14 +1,11 @@
 ﻿using BenchmarkDotNet.Running;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Benchmark {
     internal class Program {
         static void Main(string[] args) {
-            BenchmarkRunner.Run<Field_vs_Property>();
+            //BenchmarkRunner.Run<Field_vs_Property>();
+            BenchmarkRunner.Run<Collections_Benchmark>();
             Console.ReadKey();
         }
     }
