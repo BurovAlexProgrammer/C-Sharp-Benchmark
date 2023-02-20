@@ -60,7 +60,6 @@ public class TestClass {
 | EstimateGetSetProperty | 0.5735 ns | 0.0268 ns | 0.0263 ns | 0.5639 ns |    3 |         - |
 ```
 
-
 ### Collections
 <details>
 <summary>Code</summary
@@ -165,12 +164,12 @@ public class Collections_Benchmark
 </details>
     
 ```
-|              Method |         Mean |      Error |     StdDev | Rank |   Gen0 | Allocated |
-|-------------------- |-------------:|-----------:|-----------:|-----:|-------:|----------:|
-| Estimate_Dictionary |    14.467 ns |  0.2713 ns |  0.3015 ns |    3 |      - |         - |
-|    Estimate_HashSet | 1,262.601 ns | 24.9249 ns | 28.7035 ns |    5 | 0.0038 |      24 B |
-|       Estimate_List |    10.142 ns |  0.1715 ns |  0.1605 ns |    2 |      - |         - |
-|      Estimate_Array |     9.617 ns |  0.1951 ns |  0.1825 ns |    1 |      - |         - |
-| Estimate_Enumerable |    31.159 ns |  0.2338 ns |  0.2187 ns |    4 |      - |         - |    
+|              Method |      Mean |     Error |    StdDev | Rank | Allocated |
+|-------------------- |----------:|----------:|----------:|-----:|----------:|
+| Estimate_Dictionary | 14.278 ns | 0.2804 ns | 0.3444 ns |    4 |         - |
+|    Estimate_HashSet | 13.848 ns | 0.1783 ns | 0.1668 ns |    3 |         - |
+|       Estimate_List |  9.442 ns | 0.1212 ns | 0.1133 ns |    2 |         - |
+|      Estimate_Array |  9.002 ns | 0.0535 ns | 0.0475 ns |    1 |         - |
+| Estimate_Enumerable | 30.243 ns | 0.2254 ns | 0.1998 ns |    5 |         - |  
 ```
 
