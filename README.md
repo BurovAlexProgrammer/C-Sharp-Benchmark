@@ -173,3 +173,58 @@ public class Collections_Benchmark
 | Estimate_Enumerable | 30.243 ns | 0.2254 ns | 0.1998 ns |    5 |         - |  
 ```
 
+
+### Math Operations
+<details>
+<summary>Code</summary
+
+_
+```cs
+public class Operation_Benchmark
+{
+    private static float a = 10f, buffer;
+
+    private static Random _random = new Random();
+    private static Stopwatch _stopwatch = new Stopwatch();
+    private static int RandomInt => _random.Next(10);
+
+    [Benchmark]
+    public void Estimate_Multiply()
+    {
+        a += RandomInt;
+        buffer += a * 0.033333f;
+    }
+
+    [Benchmark]
+    public void Estimate_Division()
+    {
+        a += RandomInt;
+        buffer += a / 30f;
+    }
+
+    [Benchmark]
+    public void Estimate_Mod()
+    {
+        a += RandomInt;
+        buffer += a - a % 100;
+    }
+
+    [Benchmark]
+    public void Estimate_Math_Round()
+    {
+        a += RandomInt;
+        buffer += (float)Math.Round(a, 2);
+    }
+}
+```
+
+</details>
+    
+```
+|              Method |      Mean |     Error |    StdDev | Rank | Allocated |
+|-------------------- |----------:|----------:|----------:|-----:|----------:|
+|   Estimate_Multiply |  9.657 ns | 0.2104 ns | 0.2735 ns |    1 |         - |
+|   Estimate_Division |  9.514 ns | 0.2063 ns | 0.2609 ns |    1 |         - |
+|        Estimate_Mod | 15.332 ns | 0.0953 ns | 0.0891 ns |    2 |         - |
+| Estimate_Math_Round | 16.406 ns | 0.1322 ns | 0.1236 ns |    3 |         - |
+```
