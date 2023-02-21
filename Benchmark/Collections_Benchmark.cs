@@ -15,8 +15,7 @@ namespace Benchmark
         public static List<int> _list = FillList(_collectionCapacity);
         public static int[] _array = FillArray(_collectionCapacity);
         public static IEnumerable<int> _enumerable = FillArray(_collectionCapacity).AsEnumerable();
-
-
+        
         private static int Buffer;
         private static Random _random = new Random();
         private static int RandomInt => _random.Next(_collectionCapacity);
@@ -26,11 +25,11 @@ namespace Benchmark
         {
             Buffer += _dictionary[RandomInt];
         }
-        
+
         [Benchmark]
         public void Estimate_HashSet()
         {
-            Buffer += _hashSet.ElementAt(RandomInt);
+            Buffer += _hashSet.Contains(RandomInt) ? 1 : -1;
         }
 
         [Benchmark]
@@ -38,13 +37,13 @@ namespace Benchmark
         {
             Buffer += _list[RandomInt];
         }
-        
+
         [Benchmark]
         public void Estimate_Array()
         {
             Buffer += _array[RandomInt];
         }
-        
+
         [Benchmark]
         public void Estimate_Enumerable()
         {
@@ -74,7 +73,7 @@ namespace Benchmark
 
             return dictionary;
         }
-        
+
         private static HashSet<int> FillHashSet(int count)
         {
             var hashSet = new HashSet<int>(count);
