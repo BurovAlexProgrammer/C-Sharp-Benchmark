@@ -232,6 +232,7 @@ public class Operation_Benchmark
 ### Struct vs Class
 <details>
 <summary>Code</summary
+                 
 _
 ```cs
 using System;
@@ -362,8 +363,9 @@ namespace Benchmark
     }
 }
 ```
-</details>
 
+</details>
+    
 ```
 | Method                   | Mean     | Error    | StdDev   | Rank | Gen0   | Allocated |
 |------------------------- |---------:|---------:|---------:|-----:|-------:|----------:|
@@ -371,6 +373,5 @@ namespace Benchmark
 | Estimate_Struct_By_Ref   | 31.64 ns | 0.633 ns | 0.592 ns |    2 |      - |         - |
 | Estimate_Class           | 14.08 ns | 0.322 ns | 0.285 ns |    1 | 0.0458 |     240 B |
 ```
-
 
 
