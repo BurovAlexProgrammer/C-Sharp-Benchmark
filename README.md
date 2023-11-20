@@ -228,3 +228,146 @@ public class Operation_Benchmark
 |        Estimate_Mod | 15.332 ns | 0.0953 ns | 0.0891 ns |    2 |         - |
 | Estimate_Math_Round | 16.406 ns | 0.1322 ns | 0.1236 ns |    3 |         - |
 ```
+
+### Struct vs Class
+<details>
+<summary>Code</summary
+_
+```cs
+using System;
+using BenchmarkDotNet.Attributes;
+
+namespace Benchmark
+{
+    [MemoryDiagnoser(true)]
+    [RankColumn]
+    public class Struct_vs_Class
+    {
+        private static Random _random = new Random();
+
+        [Benchmark]
+        public long Estimate_Struct_Directly()
+        {
+            var target = new SomeStruct();
+            target.val1 = _random.Next();
+            target = SetStructResult(target);
+            return target.val1;
+        }
+
+        [Benchmark]
+        public long Estimate_Struct_By_Ref()
+        {
+            var target = new SomeStruct();
+            target.val1 = _random.Next();
+            target = SetStructResultByRef(ref target);
+            return target.val1;
+        }
+
+        [Benchmark]
+        public long Estimate_Class()
+        {
+            var target = new SomeClass();
+            target.val1 = _random.Next();
+            target = SetClassResult(target);
+            return target.val1;
+        }
+
+        private SomeStruct SetStructResult(SomeStruct input)
+        {
+            input.val1 *= 2;
+
+            return input;
+        }
+
+        private SomeClass SetClassResult(SomeClass input)
+        {
+            input.val1 *= 2;
+
+            return input;
+        }
+
+        private SomeStruct SetStructResultByRef(ref SomeStruct input)
+        {
+            input.val1 *= 2;
+
+            return input;
+        }
+
+
+        public struct SomeStruct
+        {
+            public long val1;
+            public long val2;
+            public long val3;
+            public long val4;
+            public long val5;
+            public long val6;
+            public long val7;
+            public long val8;
+            public long val9;
+            public long val10;
+            public long val11;
+            public long val12;
+            public long val13;
+            public long val14;
+            public long val15;
+            public long val16;
+            public long val18;
+            public long val19;
+            public long val20;
+            public long val21;
+            public long val22;
+            public long val23;
+            public long val24;
+            public long val25;
+            public long val26;
+            public long val27;
+            public long val28;
+            public long val29;
+            public long val30;
+        }
+
+        private class SomeClass
+        {
+            public long val1;
+            public long val2;
+            public long val3;
+            public long val4;
+            public long val5;
+            public long val6;
+            public long val7;
+            public long val8;
+            public long val9;
+            public long val10;
+            public long val11;
+            public long val12;
+            public long val13;
+            public long val14;
+            public long val15;
+            public long val16;
+            public long val18;
+            public long val19;
+            public long val20;
+            public long val21;
+            public long val22;
+            public long val23;
+            public long val24;
+            public long val25;
+            public long val26;
+            public long val27;
+            public long val28;
+            public long val29;
+            public long val30;
+        }
+    }
+}
+```
+</details>
+
+```
+| Method                   | Mean     | Error    | StdDev   | Rank | Gen0   | Allocated |
+|------------------------- |---------:|---------:|---------:|-----:|-------:|----------:|
+| Estimate_Struct_Directly | 40.79 ns | 0.927 ns | 0.822 ns |    3 |      - |         - |
+| Estimate_Struct_By_Ref   | 31.64 ns | 0.633 ns | 0.592 ns |    2 |      - |         - |
+| Estimate_Class           | 14.08 ns | 0.322 ns | 0.285 ns |    1 | 0.0458 |     240 B |
+```
