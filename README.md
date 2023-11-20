@@ -371,4 +371,6 @@ namespace Benchmark
 | Estimate_Struct_By_Ref   | 31.64 ns | 0.633 ns | 0.592 ns |    2 |      - |         - |
 | Estimate_Class           | 14.08 ns | 0.322 ns | 0.285 ns |    1 | 0.0458 |     240 B |
 ```
+
+
 ```
