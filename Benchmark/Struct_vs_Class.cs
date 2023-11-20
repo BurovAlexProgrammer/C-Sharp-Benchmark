@@ -7,13 +7,11 @@ namespace Benchmark
     [RankColumn]
     public class Struct_vs_Class
     {
-        private static Random _random = new Random();
-
         [Benchmark]
         public long Estimate_Struct_Directly()
         {
             var target = new SomeStruct();
-            target.val1 = _random.Next();
+            target.val1 = 1;
             target = SetStructResult(target);
             return target.val1;
         }
@@ -22,8 +20,8 @@ namespace Benchmark
         public long Estimate_Struct_By_Ref()
         {
             var target = new SomeStruct();
-            target.val1 = _random.Next();
-            target = SetStructResultByRef(ref target);
+            target.val1 = 1;
+            SetStructResultByRef(ref target);
             return target.val1;
         }
 
@@ -31,7 +29,7 @@ namespace Benchmark
         public long Estimate_Class()
         {
             var target = new SomeClass();
-            target.val1 = _random.Next();
+            target.val1 = 1;
             target = SetClassResult(target);
             return target.val1;
         }
@@ -50,13 +48,10 @@ namespace Benchmark
             return input;
         }
 
-        private SomeStruct SetStructResultByRef(ref SomeStruct input)
+        private void SetStructResultByRef(ref SomeStruct input)
         {
             input.val1 *= 2;
-
-            return input;
         }
-
 
         public struct SomeStruct
         {
