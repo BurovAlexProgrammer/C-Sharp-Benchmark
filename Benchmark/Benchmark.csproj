@@ -16,6 +16,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -173,7 +174,8 @@
     <Compile Include="Operation_Benchmark.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Struct_vs_Class.cs" />
+    <Compile Include="SmallStructVsClass.cs" />
+    <Compile Include="BigStructVsClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

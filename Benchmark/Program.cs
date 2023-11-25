@@ -15,7 +15,8 @@ namespace Benchmark {
             // BenchmarkRunner.Run<Field_vs_Property>();
             // BenchmarkRunner.Run<Collections_Benchmark>();
             // BenchmarkRunner.Run<Operation_Benchmark>();
-            BenchmarkRunner.Run<Struct_vs_Class>();
+            // BenchmarkSwitcher.FromTypes(new[] {typeof(SmallStructVsClass), typeof(BigStructVsClass)});
+            BenchmarkRunner.Run<SmallStructVsClass>();
             Console.ReadKey();
         }
     }
