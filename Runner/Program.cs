@@ -23,7 +23,7 @@ namespace Runner
             // BenchmarkRunner.Run<Operation_Benchmark>();
             // BenchmarkSwitcher.FromTypes(new[] {typeof(SmallStructVsClass), typeof(BigStructVsClass)});
 
-            BenchmarkRunner.Run<SmallStructVsClass>();
+            BenchmarkRunner.Run<SmallStructVsClass>(Configs.ThreeFrameworks);
             Console.ReadKey();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Toolchains.CsProj;
@@ -22,7 +23,9 @@ namespace Runner
                .AddJob(Job.Default
                        .WithToolchain(MonoToolchain.Mono60)
                        .WithId("Mono 6"))
-               .AddLogger(ConsoleLogger.Unicode);
+               .AddLogger(ConsoleLogger.Unicode)
+               .AddExporter(MarkdownExporter.GitHub)
+               .AddExporter(HtmlExporter.Default);
         }
     }
 }
