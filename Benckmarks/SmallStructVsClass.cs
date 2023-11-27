@@ -1,37 +1,22 @@
 ﻿using System;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Environments;
-using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Order;
 
 namespace Benchmark
 {
+    [MemoryDiagnoser]
     [RankColumn]
-    [MemoryDiagnoser(true)]
-    [Config(typeof(SmallStructVsClass.Config))]
+    [CategoriesColumn]
+    [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByMethod)]
+    [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     public class SmallStructVsClass
     {
-        private class Config : ManualConfig
-        {
-            public Config()
-            {
-                AddJob(Job.Default
-                       .WithPlatform(Platform.X64)
-                       .WithRuntime(ClrRuntime.Net481)
-                       .WithId("Net 4.8.1"));
-                AddJob(Job.Default
-                       .WithPlatform(Platform.X64)
-                       .WithRuntime(CoreRuntime.Core60)
-                       .WithId("Net 6"));
-                AddJob(Job.Default
-                       .WithPlatform(Platform.X86)
-                       .WithRuntime(MonoRuntime.Default)
-                       .WithId("Mono"));
-            }
-        }
-
+        private const string Struct = "Struct";
+        private const string RefStruct = "Ref Struct";
+        private const string Class = "Class";
         private Random _random;
-        private int _targetValue;
+        private static int _targetValue;
 
         [GlobalSetup]
         public void Setup()
@@ -41,6 +26,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(Struct)]
         public long Estimate_Small_Struct_Directly()
         {
             var target = new SmallStruct();
@@ -50,6 +36,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(Struct)]
         public long Estimate_Small_Struct_By_Ref1()
         {
             var target = new SmallStruct();
@@ -59,6 +46,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(Struct)]
         public long Estimate_Small_Struct_By_Ref2()
         {
             var target = new SmallStruct();
@@ -68,6 +56,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(Struct)]
         public long Estimate_Small_Struct_By_Ref3()
         {
             var target = new SmallStruct();
@@ -77,6 +66,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(Struct)]
         public long Estimate_Small_Struct_By_In()
         {
             var target = new SmallStruct();
@@ -84,10 +74,10 @@ namespace Benchmark
             target = SetValueByIn(in target);
             return target.value;
         }
-        
-        
-        
+
+
         [Benchmark]
+        [BenchmarkCategory(RefStruct)]
         public long Estimate_Small_RefStruct_Directly()
         {
             var target = new SmallRefStruct();
@@ -97,6 +87,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(RefStruct)]
         public long Estimate_Small_RefStruct_By_Ref1()
         {
             var target = new SmallRefStruct();
@@ -106,6 +97,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(RefStruct)]
         public long Estimate_Small_RefStruct_By_Ref2()
         {
             var target = new SmallRefStruct();
@@ -115,6 +107,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(RefStruct)]
         public long Estimate_Small_RefStruct_By_Ref3()
         {
             var target = new SmallRefStruct();
@@ -124,6 +117,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(RefStruct)]
         public long Estimate_Small_RefStruct_By_In1()
         {
             var target = new SmallRefStruct();
@@ -132,18 +126,9 @@ namespace Benchmark
             return result.value;
         }
 
+
         [Benchmark]
-        public long Estimate_Small_RefStruct_By_In2()
-        {
-            var target = new SmallRefStruct();
-            target.value = _targetValue;
-            SmallRefStruct result = SetValueByIn2(in target);
-            return result.value;
-        }
-        
-        
-        
-        [Benchmark]
+        [BenchmarkCategory(Class)]
         public long Estimate_Small_Class()
         {
             var target = new SmallClass();
@@ -152,78 +137,77 @@ namespace Benchmark
             return target.value;
         }
 
-        private SmallClass SetValue(SmallClass input)
+
+        private static SmallClass SetValue(SmallClass input)
         {
             input.value *= 2;
 
             return input;
         }
 
-        private SmallStruct SetValue(SmallStruct input)
+        private static SmallStruct SetValue(SmallStruct input)
         {
             input.value *= 2;
 
             return input;
         }
 
-        private SmallStruct SetValueRef1(ref SmallStruct input)
+        private static SmallStruct SetValueRef1(ref SmallStruct input)
         {
             input.value *= 2;
 
             return input;
         }
 
-        private ref SmallStruct SetValueRef2(ref SmallStruct input)
-        {
-            input.value *= 2;
-
-            return ref input;
-        }
-        private void SetValueRef3(ref SmallStruct input)
-        {
-            input.value *= 2;
-        }
-
-        private SmallStruct SetValueByIn(in SmallStruct input)
-        {
-            return input with {value = input.value * 2};
-        }
-
-        private SmallRefStruct SetValue(SmallRefStruct input)
-        {
-            input.value *= 2;
-
-            return input;
-        }
-
-        private SmallRefStruct SetValueRef1(ref SmallRefStruct input)
-        {
-            input.value *= 2;
-
-            return input;
-        }
-
-        private ref SmallRefStruct SetValueRef2(ref SmallRefStruct input)
+        private static ref SmallStruct SetValueRef2(ref SmallStruct input)
         {
             input.value *= 2;
 
             return ref input;
         }
 
-        private void SetValueRef3(ref SmallRefStruct input)
+        private static void SetValueRef3(ref SmallStruct input)
         {
             input.value *= 2;
         }
 
-        private SmallRefStruct SetValueByIn1(in SmallRefStruct input)
-        {
-            return input with {value = input.value * 2};
-        }
-        
-        private SmallRefStruct SetValueByIn2(in SmallRefStruct input)
+        private static SmallStruct SetValueByIn(in SmallStruct input)
         {
             var temp = input;
-            temp.value *= 2;
+            temp.value = input.value * 2;
+            return temp;
+        }
+
+        private static SmallRefStruct SetValue(SmallRefStruct input)
+        {
+            input.value *= 2;
+
+            return input;
+        }
+
+        private static SmallRefStruct SetValueRef1(ref SmallRefStruct input)
+        {
+            input.value *= 2;
+
+            return input;
+        }
+
+        private static ref SmallRefStruct SetValueRef2(ref SmallRefStruct input)
+        {
+            input.value *= 2;
+
+            return ref input;
+        }
+
+        private static void SetValueRef3(ref SmallRefStruct input)
+        {
+            input.value *= 2;
+        }
+
+        private static SmallRefStruct SetValueByIn1(in SmallRefStruct input)
+        {
+            var temp = input;
+            temp.value = input.value * 2;
             return temp;
         }
 

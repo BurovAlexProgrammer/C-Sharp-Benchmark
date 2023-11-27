@@ -3,34 +3,20 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
-using Perfolizer.Horology;
+using BenchmarkDotNet.Order;
 
 namespace Benchmark
 {
+    [MemoryDiagnoser]
     [RankColumn]
-    [MemoryDiagnoser(true)]
-    [Config(typeof(BigStructVsClass.Config))]
+    [CategoriesColumn]
+    [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByMethod)]
+    [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     public class BigStructVsClass
     {
-        private class Config : ManualConfig
-        {
-            public Config()
-            {
-                AddJob(Job.Default
-                       .WithPlatform(Platform.X64)
-                       .WithRuntime(ClrRuntime.Net48)
-                       .WithId("Net 4.8.1"));
-                AddJob(Job.Default
-                       .WithPlatform(Platform.X64)
-                       .WithRuntime(CoreRuntime.Core60)
-                       .WithId("Net 6"));
-                AddJob(Job.Default
-                       .WithPlatform(Platform.X86)
-                       .WithRuntime(MonoRuntime.Default)
-                       .WithId("Mono"));
-            }
-        }
-
+        private const string Struct = "Struct";
+        private const string RefStruct = "Ref Struct";
+        private const string Class = "Class";
         private Random _random;
         private int _targetValue;
 
@@ -42,6 +28,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(Struct)]
         public long Estimate_Big_Struct_Directly()
         {
             var target = new BigStruct();
@@ -51,6 +38,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(Struct)]
         public long Estimate_Big_Struct_By_Ref1()
         {
             var target = new BigStruct();
@@ -60,6 +48,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(Struct)]
         public long Estimate_Big_Struct_By_Ref2()
         {
             var target = new BigStruct();
@@ -69,6 +58,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(Struct)]
         public long Estimate_Big_Struct_By_Ref3()
         {
             var target = new BigStruct();
@@ -78,6 +68,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(Struct)]
         public long Estimate_Big_Struct_By_In()
         {
             var target = new BigStruct();
@@ -86,9 +77,9 @@ namespace Benchmark
             return target.value;
         }
 
-        
-        
+
         [Benchmark]
+        [BenchmarkCategory(RefStruct)]
         public long Estimate_Big_RefStruct_Directly()
         {
             var target = new BigRefStruct();
@@ -98,6 +89,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(RefStruct)]
         public long Estimate_Big_RefStruct_By_Ref1()
         {
             var target = new BigRefStruct();
@@ -107,6 +99,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(RefStruct)]
         public long Estimate_Big_RefStruct_By_Ref2()
         {
             var target = new BigRefStruct();
@@ -116,6 +109,7 @@ namespace Benchmark
         }
 
         [Benchmark]
+        [BenchmarkCategory(RefStruct)]
         public long Estimate_Big_RefStruct_By_Ref3()
         {
             var target = new BigRefStruct();
@@ -125,27 +119,18 @@ namespace Benchmark
         }
 
         [Benchmark]
-        public long Estimate_Big_RefStruct_By_In1()
+        [BenchmarkCategory(RefStruct)]
+        public long Estimate_Big_RefStruct_By_In()
         {
             var target = new BigRefStruct();
             target.value = _targetValue;
-            var result = SetValueByIn1(in target);
+            var result = SetValueByIn(in target);
             return result.value;
         }
 
+
         [Benchmark]
-        public long Estimate_Big_RefStruct_By_In2()
-        {
-            var target = new BigRefStruct();
-            target.value = _targetValue;
-            var result = SetValueByIn2(in target);
-            return result.value;
-        }
-        
-        
-        
-        
-        [Benchmark]
+        [BenchmarkCategory(Class)]
         public long Estimate_Big_Class()
         {
             var target = new BigClass();
@@ -154,75 +139,73 @@ namespace Benchmark
             return target.value;
         }
 
-        private BigClass SetValue(BigClass input)
+        private static BigClass SetValue(BigClass input)
         {
             input.value *= 2;
 
             return input;
         }
 
-        private BigStruct SetValue(BigStruct input)
+        private static BigStruct SetValue(BigStruct input)
         {
             input.value *= 2;
 
             return input;
         }
 
-        private BigStruct SetValueRef1(ref BigStruct input)
+        private static BigStruct SetValueRef1(ref BigStruct input)
         {
             input.value *= 2;
 
             return input;
         }
 
-        private ref BigStruct SetValueRef2(ref BigStruct input)
-        {
-            input.value *= 2;
-
-            return ref input;
-        }
-        private void SetValueRef3(ref BigStruct input)
-        {
-            input.value *= 2;
-        }
-
-        private BigStruct SetValueByIn1(in BigStruct input)
-        {
-            return input with {value = input.value * 2};
-        }
-
-        private BigRefStruct SetValue(BigRefStruct input)
-        {
-            input.value *= 2;
-
-            return input;
-        }
-
-        private BigRefStruct SetValueRef1(ref BigRefStruct input)
-        {
-            input.value *= 2;
-
-            return input;
-        }
-
-        private ref BigRefStruct SetValueRef2(ref BigRefStruct input)
+        private static ref BigStruct SetValueRef2(ref BigStruct input)
         {
             input.value *= 2;
 
             return ref input;
         }
 
-        private void SetValueRef3(ref BigRefStruct input)
+        private static void SetValueRef3(ref BigStruct input)
         {
             input.value *= 2;
         }
 
-        private BigRefStruct SetValueByIn1(in BigRefStruct input)
+        private static BigStruct SetValueByIn1(in BigStruct input)
         {
-            return input with {value = input.value * 2};
+            var temp = input;
+            temp.value = input.value * 2;
+            return temp;
         }
 
-        private BigRefStruct SetValueByIn2(in BigRefStruct input)
+        private static BigRefStruct SetValue(BigRefStruct input)
+        {
+            input.value *= 2;
+
+            return input;
+        }
+
+        private static BigRefStruct SetValueRef1(ref BigRefStruct input)
+        {
+            input.value *= 2;
+
+            return input;
+        }
+
+        private static ref BigRefStruct SetValueRef2(ref BigRefStruct input)
+        {
+            input.value *= 2;
+
+            return ref input;
+        }
+
+        private static void SetValueRef3(ref BigRefStruct input)
+        {
+            input.value *= 2;
+        }
+
+        private static BigRefStruct SetValueByIn(in BigRefStruct input)
         {
             var temp = input;
             temp.value *= 2;
