@@ -1,8 +1,14 @@
 ﻿using System;
+using Benchmark;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Filters;
+using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
 
-namespace Benchmark {
-    internal class Program {
+namespace Runner
+{
+    internal class Program
+    {
         static void Main(string[] args)
         {
             // var config = new ManualConfig()
@@ -10,12 +16,14 @@ namespace Benchmark {
             //     .AddValidator(JitOptimizationsValidator.DontFailOnError)
             //     .AddLogger(ConsoleLogger.Default)
             //     .AddColumnProvider(DefaultColumnProviders.Instance);
-            
-            
+
+
             // BenchmarkRunner.Run<Field_vs_Property>();
             // BenchmarkRunner.Run<Collections_Benchmark>();
             // BenchmarkRunner.Run<Operation_Benchmark>();
-            BenchmarkRunner.Run<Struct_vs_Class>();
+            // BenchmarkSwitcher.FromTypes(new[] {typeof(SmallStructVsClass), typeof(BigStructVsClass)});
+
+            BenchmarkRunner.Run<SmallStructVsClass>(Configs.ThreeFrameworks);
             Console.ReadKey();
         }
     }
